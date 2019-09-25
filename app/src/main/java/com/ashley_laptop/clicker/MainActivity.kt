@@ -7,6 +7,12 @@ import android.view.View
 import com.ashley_laptop.clicker.util.rotate90
 import com.ashley_laptop.clicker.util.toggleVisibility
 import kotlinx.android.synthetic.main.activity_main.*
+import android.content.SharedPreferences
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
+
 
 class MainActivity : AppCompatActivity() {
     private var counter: Long = 0
@@ -16,8 +22,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        intent.extras?.get("username")
+
         if (savedInstanceState != null) {
-            counter = savedInstanceState.getLong(COUNTER_KEY, 0)
+            updateCounter(savedInstanceState.getLong(COUNTER_KEY, 0))
+        }else if (getStore().contains(COUNTER_KEY)) {
+            updateCounter(getStore().getLong(COUNTER_KEY, 0))
         }
 
         myButton.setOnClickListener {
@@ -25,6 +35,11 @@ class MainActivity : AppCompatActivity() {
             clicks.text = "Clicks: " + counter.toString()
             someImage.rotate90()
         }
+    }
+
+    private fun updateCounter(count: Long) {
+        counter = count
+        clicks.text = "Score ${counter.toString()}"
     }
 
     override fun onPause() {

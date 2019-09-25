@@ -7,22 +7,20 @@ import android.view.View
 import com.ashley_laptop.clicker.util.rotate90
 import com.ashley_laptop.clicker.util.toggleVisibility
 import kotlinx.android.synthetic.main.activity_main.*
-import android.content.SharedPreferences
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-
 
 
 class MainActivity : AppCompatActivity() {
     private var counter: Long = 0
     fun getStore() = getPreferences(Context.MODE_PRIVATE)
+    var COUNTER_KEY: String = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        intent.extras?.get("username")
+        val name = intent.extras?.get("username").toString().trim()
+        COUNTER_KEY = name
 
         if (savedInstanceState != null) {
             updateCounter(savedInstanceState.getLong(COUNTER_KEY, 0))
@@ -55,8 +53,10 @@ class MainActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
     }
 
-    companion object {
-        private const val COUNTER_KEY = "counter key"
-    }
+//    companion object {
+//        //need name key to increase in number as new usernames are entered
+//        //need counter key to increase in number as new usernames are entered
+//        private const val COUNTER_KEY = "name"
+//    }
 
 }

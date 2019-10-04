@@ -28,10 +28,28 @@ class MainActivity : AppCompatActivity() {
             updateCounter(getStore().getLong(COUNTER_KEY, 0))
         }
 
+        var backgroundCounter = counter
+
         myButton.setOnClickListener {
             counter++
             clicks.text = "Clicks: " + counter.toString()
-            someImage.rotate90()
+
+            if(counter == backgroundCounter + 30) {
+                var randomInteger = (1..4).shuffled().first()
+                if (randomInteger == 1) {
+                    background.setImageResource(R.drawable.fall)
+                    backgroundCounter += 30
+                } else if (randomInteger == 2) {
+                    background.setImageResource(R.drawable.winter)
+                    backgroundCounter += 30
+                } else if (randomInteger == 3) {
+                    background.setImageResource(R.drawable.spring)
+                    backgroundCounter += 30
+                } else if (randomInteger == 4) {
+                    background.setImageResource(R.drawable.summer)
+                    backgroundCounter += 30
+                }
+            }
         }
     }
 

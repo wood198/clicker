@@ -3,7 +3,10 @@ package com.ashley_laptop.clicker.util
 import android.view.View
 
 fun View.toggleVisibility(){
-    visibility = if (visibility == View.VISIBLE) {View.INVISIBLE} else {View.VISIBLE
+    visibility = if (visibility == View.VISIBLE) {
+        View.INVISIBLE
+    } else {
+        View.VISIBLE
     }
 }
 

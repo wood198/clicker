@@ -1,11 +1,11 @@
-package com.ashley_laptop.clicker
+package com.ashley_laptop.clicker.view
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.appcompat.app.AppCompatActivity
+import com.ashley_laptop.clicker.R
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity(){

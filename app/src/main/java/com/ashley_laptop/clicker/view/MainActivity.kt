@@ -3,7 +3,6 @@ package com.ashley_laptop.clicker.view
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.ashley_laptop.clicker.R
 import com.ashley_laptop.clicker.viewmodel.CountViewModel
@@ -11,9 +10,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
+    //late initializing the count view model, initializing the counter
     private lateinit var countViewModel: CountViewModel
     private var counter: Long = 0
+
+    //creating a username function that takes in the string entered on the login page
     private fun getUserName() = intent.extras?.get("username").toString().trim()
+
 //    fun getStore() = getPreferences(Context.MODE_PRIVATE)
 //    var COUNTER_KEY: String = ""
 
@@ -31,16 +34,20 @@ class MainActivity : AppCompatActivity() {
 //            updateCounter(getStore().getLong(COUNTER_KEY, 0))
 //        }
 
+        //gets the info from countViewModel and gets the count from the user and updates the counter
         countViewModel = ViewModelProviders.of(this).get(CountViewModel::class.java)
         countViewModel.getUserCount(getUserName()).observe(this,
             androidx.lifecycle.Observer { updateCounter(it) })
 
         var backgroundCounter = counter
 
+        //when the button is clicked...
         myButton.setOnClickListener {
+            //counter updates
             counter++
             clicks.text = "Clicks: " + counter.toString()
 
+            //background changes every 30 clicks
             if(counter == backgroundCounter + 30) {
                 var randomInteger = (1..4).shuffled().first()
                 if (randomInteger == 1) {
@@ -57,10 +64,13 @@ class MainActivity : AppCompatActivity() {
                     backgroundCounter += 30
                 }
             }
+
+            //sets the user account in storage so it will save
             countViewModel.setUserCount(getUserName(), counter + 1)
         }
     }
 
+    //update the counter on the screen
     private fun updateCounter(count: Long) {
         counter = count
         clicks.text = "Score ${counter.toString()}"

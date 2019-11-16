@@ -3,15 +3,19 @@ package com.ashley_laptop.clicker.view
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.bumptech.glide.Glide
 import androidx.lifecycle.ViewModelProviders
 import com.ashley_laptop.clicker.R
+import com.ashley_laptop.clicker.model.Gif
 import com.ashley_laptop.clicker.viewmodel.CountViewModel
+import com.ashley_laptop.clicker.viewmodel.GifViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
     //late initializing the count view model, initializing the counter
     private lateinit var countViewModel: CountViewModel
+    private lateinit var gifViewModel: GifViewModel
     private var counter: Long = 0
 
     //creating a username function that takes in the string entered on the login page
@@ -38,6 +42,10 @@ class MainActivity : AppCompatActivity() {
         countViewModel = ViewModelProviders.of(this).get(CountViewModel::class.java)
         countViewModel.getUserCount(getUserName()).observe(this,
             androidx.lifecycle.Observer { updateCounter(it) })
+
+        gifViewModel = ViewModelProviders.of(this).get(GifViewModel::class.java)
+        gifViewModel.getRandomGif("android").observe(this,
+            androidx.lifecycle.Observer { loadGif(it) })
 
         var backgroundCounter = counter
 
@@ -74,6 +82,13 @@ class MainActivity : AppCompatActivity() {
     private fun updateCounter(count: Long) {
         counter = count
         clicks.text = "Score ${counter.toString()}"
+    }
+
+    private fun loadGif(gif: Gif){
+        Glide.with(this)
+            .load(gif.url)
+            .into(image)
+
     }
 
 //    override fun onPause() {

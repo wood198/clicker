@@ -1,15 +1,18 @@
 package com.ashley_laptop.clicker.view
 
 import android.content.Context
+import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bumptech.glide.Glide
 import androidx.lifecycle.ViewModelProviders
 import com.ashley_laptop.clicker.R
 import com.ashley_laptop.clicker.model.Gif
+import com.ashley_laptop.clicker.util.MyAlarmManager
 import com.ashley_laptop.clicker.viewmodel.CountViewModel
 import com.ashley_laptop.clicker.viewmodel.GifViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.concurrent.atomic.LongAdder
 
 
 class MainActivity : AppCompatActivity() {
@@ -28,6 +31,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.SECOND, 10)
+        MyAlarmManager.setAlarm(applicationContext, calendar.timeInMillis, "Test Message!")
 
 //        val name = intent.extras?.get("username").toString().trim()
 //        COUNTER_KEY = name
@@ -53,28 +60,34 @@ class MainActivity : AppCompatActivity() {
         myButton.setOnClickListener {
             //counter updates
             counter++
+            counter--
             clicks.text = "Clicks: " + counter.toString()
 
-            //background changes every 30 clicks
-            if(counter == backgroundCounter + 30) {
-                var randomInteger = (1..4).shuffled().first()
-                if (randomInteger == 1) {
-                    background.setImageResource(R.drawable.fall)
-                    backgroundCounter += 30
-                } else if (randomInteger == 2) {
-                    background.setImageResource(R.drawable.winter)
-                    backgroundCounter += 30
-                } else if (randomInteger == 3) {
-                    background.setImageResource(R.drawable.spring)
-                    backgroundCounter += 30
-                } else if (randomInteger == 4) {
-                    background.setImageResource(R.drawable.summer)
-                    backgroundCounter += 30
-                }
-            }
+            changeBackground(backgroundCounter)
 
             //sets the user account in storage so it will save
             countViewModel.setUserCount(getUserName(), counter + 1)
+        }
+    }
+
+    //still isnt working after we added viewmodel
+    private fun changeBackground(_count: Long){
+        var count = _count
+        if (counter == count + 30) {
+            var randomInteger = (1..4).shuffled().first()
+            if (randomInteger == 1) {
+                background.setImageResource(R.drawable.fall)
+                count += 30
+            } else if (randomInteger == 2) {
+                background.setImageResource(R.drawable.winter)
+                count += 30
+            } else if (randomInteger == 3) {
+                background.setImageResource(R.drawable.spring)
+                count += 30
+            } else if (randomInteger == 4) {
+                background.setImageResource(R.drawable.summer)
+                count += 30
+            }
         }
     }
 
